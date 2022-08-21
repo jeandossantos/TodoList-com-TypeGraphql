@@ -1,6 +1,6 @@
 import { Arg, Mutation, Query, Resolver } from 'type-graphql';
 import { User } from '../models/User';
-import { prisma } from '../prisma';
+import { UserRepository } from '../repositories/userRepository/UserRepository';
 import { encryptPassword } from '../utils/helpers';
 
 @Resolver()
@@ -20,13 +20,13 @@ export class UserResolver {
   ) {
     const encryptedPassword = encryptPassword(password);
 
-    const user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        initials,
-        password: encryptedPassword,
-      },
+    const userRepository = new UserRepository();
+
+    const user = await userRepository.create({
+      name,
+      email,
+      initials,
+      password: encryptedPassword,
     });
 
     return user;
