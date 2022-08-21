@@ -2,11 +2,11 @@ import { ApolloServer } from 'apollo-server';
 import 'reflect-metadata';
 
 import { buildSchema } from 'type-graphql';
-import { Recipe } from './models/Recipe';
+import { UserResolver } from './resolvers/UserResolver';
 
 async function main() {
   const schema = await buildSchema({
-    resolvers: [Recipe],
+    resolvers: [UserResolver],
   });
 
   const server = new ApolloServer({
