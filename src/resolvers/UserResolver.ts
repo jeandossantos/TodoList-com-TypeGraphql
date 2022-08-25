@@ -11,11 +11,6 @@ const userRepository = new UserRepository();
 
 @Resolver()
 export class UserResolver {
-  @Query((returns) => String)
-  async hello() {
-    return 'Hello';
-  }
-
   @Query((returns) => UserPayload)
   async authenticateUser(
     @Arg('email') email: string,
@@ -47,6 +42,13 @@ export class UserResolver {
     const { userId, initials, name } = updateUserArgs;
 
     const user = await userRepository.update(userId, name, initials);
+
+    return user;
+  }
+
+  @Mutation((returns) => User)
+  async deleteUser(@Arg('userId') userId: string) {
+    const user = await userRepository.remove(userId);
 
     return user;
   }
