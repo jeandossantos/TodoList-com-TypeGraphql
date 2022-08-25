@@ -33,7 +33,7 @@ export class UserRepository implements IUserRepository {
   }
 
   async update(userId: string, name: string, initials: string) {
-    await prisma.user.update({
+    const user = await prisma.user.update({
       where: {
         id: userId,
       },
@@ -42,6 +42,8 @@ export class UserRepository implements IUserRepository {
         initials,
       },
     });
+
+    return user;
   }
 
   async findByEmail(email: string) {
