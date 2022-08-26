@@ -2,11 +2,12 @@ import { ApolloServer } from 'apollo-server';
 import 'reflect-metadata';
 
 import { buildSchema } from 'type-graphql';
+import { TaskResolver } from './resolvers/TaskResolver';
 import { UserResolver } from './resolvers/UserResolver';
 
 async function main() {
   const schema = await buildSchema({
-    resolvers: [UserResolver],
+    resolvers: [UserResolver, TaskResolver],
   });
 
   const server = new ApolloServer({
