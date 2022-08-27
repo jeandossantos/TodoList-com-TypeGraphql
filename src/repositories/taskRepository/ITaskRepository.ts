@@ -1,4 +1,4 @@
-import { Task } from '../../entities/Task';
+import { Task } from '../../models/Task';
 
 export type PaginatedTasks = {
   tasks: Task[];
@@ -7,12 +7,12 @@ export type PaginatedTasks = {
 };
 
 export default interface ITaskRepository {
-  create: (task: Task) => Promise<Task>;
+  create: (task: Omit<Task, 'id' | 'createdAt'>) => Promise<Task>;
   findByName: (
     userId: string,
     page: number,
     name?: string
   ) => Promise<PaginatedTasks>;
   remove: (taskId: string) => Promise<Task>;
-  update: (task: Omit<Task, 'userId'>) => Promise<Task>;
+  update: (task: Omit<Task, 'userId' | 'createdAt'>) => Promise<Task>;
 }
