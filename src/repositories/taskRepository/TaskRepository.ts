@@ -33,7 +33,13 @@ export class TaskRepository implements ITaskRepository {
     return { tasks, count, limit };
   }
 
-  async create({ name, description, deadline, done, userId }: Task) {
+  async create({
+    name,
+    description,
+    deadline,
+    done,
+    userId,
+  }: Omit<Task, 'id' | 'createdAt'>) {
     const task = await prisma.task.create({
       data: {
         name: name,
@@ -57,7 +63,13 @@ export class TaskRepository implements ITaskRepository {
     return task;
   }
 
-  async update({ id, name, description, done, deadline }: Task) {
+  async update({
+    id,
+    name,
+    description,
+    done,
+    deadline,
+  }: Omit<Task, 'createdAt' | 'userId'>) {
     const task = await prisma.task.update({
       where: {
         id,

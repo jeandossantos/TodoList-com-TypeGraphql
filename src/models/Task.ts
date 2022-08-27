@@ -7,17 +7,18 @@ export class Task {
 
   @Field()
   userId: string;
+
   @Field()
   name: string;
 
-  @Field()
-  description: string;
+  @Field({ nullable: true })
+  description?: string;
+
+  @Field({ nullable: true })
+  deadline?: Date;
 
   @Field()
-  deadline: Date;
-
-  @Field()
-  done: boolean;
+  done?: boolean;
 
   @Field()
   createdAt: Date;
