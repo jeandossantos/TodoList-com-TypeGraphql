@@ -1,8 +1,10 @@
 import { prisma } from '../../prisma';
+import { Service } from 'typedi';
 
 import { User } from '../../models/User';
 import { IUserRepository } from './IUserRepository';
 
+@Service()
 export class UserRepository implements IUserRepository {
   async create({
     name,

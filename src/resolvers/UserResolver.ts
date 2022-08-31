@@ -10,11 +10,15 @@ import { UpdateUserInput } from '../inputs/UpdateUserInput';
 import { CustomException } from '../exceptions/CustomException';
 import { User } from '../models/User';
 import { equalsOrError } from '../utils/validators';
+import { Service } from 'typedi';
 
 const userRepository = new UserRepository();
 
+@Service()
 @Resolver()
 export class UserResolver {
+  constructor(private readonly userRepository: UserRepository) {}
+
   @Query((returns) => UserPayload)
   async authenticateUser(
     @Arg('email') email: string,
@@ -24,7 +28,7 @@ export class UserResolver {
       throw new CustomException('Enter E-mail and password!');
     }
 
-    const user = await userRepository.findByEmail(email);
+    const user = await this.userRepository.findByEmail(email);
 
     if (!user) throw new CustomException('E-mail not registered!');
 
@@ -54,7 +58,7 @@ export class UserResolver {
 
     const encryptedPassword = encryptPassword(password);
 
-    const user = await userRepository.create({
+    const user = await this.userRepository.create({
       name,
       email,
       initials,
@@ -68,14 +72,14 @@ export class UserResolver {
   async updateUser(@Arg('data') updateUserInput: UpdateUserInput) {
     const { userId, initials, name } = updateUserInput;
 
-    const user = await userRepository.update(userId, name, initials);
+    const user = await this.userRepository.update(userId, name, initials);
 
     return user;
   }
 
   @Mutation((returns) => User)
   async deleteUser(@Arg('userId') userId: string) {
-    const user = await userRepository.remove(userId);
+    const user = await this.userRepository.remove(userId);
 
     return user;
   }
