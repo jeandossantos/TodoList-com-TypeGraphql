@@ -5,6 +5,8 @@ import { buildSchema } from 'type-graphql';
 import { TaskResolver } from './resolvers/TaskResolver';
 import { UserResolver } from './resolvers/UserResolver';
 
+import { context } from './prisma';
+
 async function main() {
   const schema = await buildSchema({
     resolvers: [UserResolver, TaskResolver],
@@ -12,6 +14,7 @@ async function main() {
 
   const server = new ApolloServer({
     schema,
+    context,
   });
 
   const { url } = await server.listen();

@@ -1,10 +1,11 @@
-import { Arg, Args, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Args, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { PaginatedTasks } from '../models/PaginatedTasks';
 import { Task } from '../models/Task';
 import { TaskRepository } from '../repositories/taskRepository/TaskRepository';
 import { existsOrError } from '../utils/validators';
 import { CreateTaskInput } from '../inputs/CreateTaskInput';
 import { UpdateTaskInput } from '../inputs/UpdateTaskInput';
+import { Context } from '../prisma';
 
 const taskRepository = new TaskRepository();
 
@@ -13,8 +14,9 @@ export class TaskResolver {
   @Query((returns) => PaginatedTasks)
   async getTasks(
     @Arg('user_id') user_id: string,
-    @Arg('page') page?: number,
-    @Arg('search') search: string = ''
+    @Arg('search') search: string = '',
+    @Arg('page') page: number,
+    @Ctx() ctx: Context
   ) {
     existsOrError(user_id, 'User ID is required!');
 
